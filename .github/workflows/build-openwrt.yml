@@ -14,7 +14,7 @@ on:
     types: published
   push:
     branches:
-      - master
+      - dev-master
     paths:
       - '.config'
 #  schedule:
@@ -24,7 +24,7 @@ on:
 
 env:
   REPO_URL: https://github.com/Lienol/openwrt
-  REPO_BRANCH: master
+  REPO_BRANCH: dev-master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
@@ -66,6 +66,11 @@ jobs:
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
+    - name: Clone Config
+      env: 
+        REPO_URL: https://github.com/Lienol/openwrt-actions
+      run: git clone --depth 1 $REPO_URL openwrt-config
+      
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
